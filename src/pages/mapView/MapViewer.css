@@ -1,0 +1,85 @@
+.map-container {
+    display: flex;
+    height: 100vh;
+    background: #f5f5f5;
+    font-family: Arial, sans-serif;
+  }
+  
+  .map-section {
+    flex: 3;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  .map-zoom {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .map-zoom button {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: #f0f0f0;
+    cursor: pointer;
+  }
+  
+  .map-zoom button:hover {
+    background: #e0e0e0;
+  }
+  
+  .sidebar {
+    flex: 1;
+    padding: 20px;
+    background: white;
+    box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sidebar label {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 4px;
+    display: block;
+  }
+  
+  .sidebar input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  
+  .sidebar button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-clear {
+    background: #f8c291;
+    margin-bottom: 10px;
+  }
+  
+  .btn-apply {
+    background: #ff7043;
+    color: white;
+  }
+  
+  .btn-clear:hover {
+    background: #f0a87c;
+  }
+  
+  .btn-apply:hover {
+    background: #e55c2f;
+  }
