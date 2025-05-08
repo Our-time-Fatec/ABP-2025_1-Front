@@ -1,16 +1,16 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/home/home';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/login/login';
+import MapViewer from './pages/mapView/MapViewer';
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/mapa" element={<MapViewer />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 
