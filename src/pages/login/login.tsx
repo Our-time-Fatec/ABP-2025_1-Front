@@ -6,13 +6,15 @@ import "./login.css";
 import mapImg from "../../assets/map.png";
 import logoImg from "../../assets/logo.png";
 import backgroundImg from "../../assets/background.jpg";
+import { login } from "../../http/api";
+import { catchError } from "../../client/try-catch";
 
 const loginSchema = z.object({
   email: z
     .string()
     .nonempty("Email é obrigatório")
     .email("Email ou senha inválidos"),
-  senha: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
+  password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
   lembrar: z.boolean().optional(),
 });
 
@@ -29,13 +31,20 @@ function Login() {
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
-      senha: "",
+      password: "",
       lembrar: false,
     },
   });
 
-  const onSubmit = (data: LoginFormData) => {
+  const onSubmit = async (data: LoginFormData) => {
     console.log("Dados do formulário:", data);
+
+    const [err, res] = await catchError(login(data));
+    if(err){
+      alert("Erro ao fazer login, verifique suas credenciais");
+      return 
+    }
+
     navigate("/mapa");
   };
 
@@ -61,12 +70,14 @@ function Login() {
             <input
               type="password"
               placeholder="Digite sua senha"
-              {...register("senha")}
+              {...register("password")}
             />
-            {errors.senha && <p className="error">{errors.senha.message}</p>}
+            {errors.password && (
+              <p className="error">{errors.password.message}</p>
+            )}
 
             <div className="options">
-              <div className="remember-me"> 
+              <div className="remember-me">
                 <input type="checkbox" id="remember" {...register("lembrar")} />
                 <span>Lembre-se por 30 dias</span>
               </div>
