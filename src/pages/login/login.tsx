@@ -8,6 +8,7 @@ import logoImg from "../../assets/logo.png";
 import backgroundImg from "../../assets/background.jpg";
 import { login } from "../../http/api";
 import { catchError } from "../../client/try-catch";
+import { useAuth } from "../../context/auth";
 
 const loginSchema = z.object({
   email: z
@@ -22,6 +23,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 function Login() {
   const navigate = useNavigate();
+  const { setToken } = useAuth();
 
   const {
     register,
@@ -40,10 +42,13 @@ function Login() {
     console.log("Dados do formulário:", data);
 
     const [err, res] = await catchError(login(data));
-    if(err){
-      alert("Erro ao fazer login, verifique suas credenciais");
-      return 
+    
+    if (err) {
+      alert(err.message);
+      return;
     }
+
+    setToken(res.token);
 
     navigate("/mapa");
   };

@@ -53,7 +53,7 @@ export async function http<T>(
     const errorData = errorBody
       ? JSON.parse(errorBody)
       : { message: 'Erro desconhecido' }
-
+    
     throw new Error(errorData.message || `Erro HTTP ${response.status}`)
   }
 
