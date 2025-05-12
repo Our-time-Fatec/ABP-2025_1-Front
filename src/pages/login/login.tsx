@@ -69,7 +69,6 @@ function Login() {
               <div className="remember-me"> 
                 <input type="checkbox" id="remember" {...register("lembrar")} />
                 <span>Lembre-se por 30 dias</span>
-                <label htmlFor="remember" style={{display: "none"}}/>
               </div>
               <a href="#">Esqueci minha senha</a>
             </div>
