@@ -1,34 +1,76 @@
-import React from 'react';
-import './login.css';
-import mapImg from '../../assets/map.png';
-import logoImg from '../../assets/logo.png';
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
+import "./login.css";
+import mapImg from "../../assets/map.png";
+import logoImg from "../../assets/logo.png";
+import backgroundImg from "../../assets/background.jpg";
+
+const loginSchema = z.object({
+  email: z
+    .string()
+    .nonempty("Email é obrigatório")
+    .email("Email ou senha inválidos"),
+  senha: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
+  lembrar: z.boolean().optional(),
+});
+
+type LoginFormData = z.infer<typeof loginSchema>;
 
 function Login() {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert('Login efetuado!');
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      senha: "",
+      lembrar: false,
+    },
+  });
+
+  const onSubmit = (data: LoginFormData) => {
+    console.log("Dados do formulário:", data);
+    navigate("/mapa");
   };
 
   return (
     <div className="login-wrapper">
+      <img src={backgroundImg} alt="fundo" className="background-image" />
+
       <div className="login-left">
         <div className="login-box">
-          <img src={logoImg} alt="Logo" className="logo" /> {/* Troque pela logo desejada */}
+          <img src={logoImg} alt="Logo" className="logo" />
           <h2>Bem vindo(a)!</h2>
           <p>Insira suas credenciais para acessar o sistema</p>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <label>Email</label>
-            <input type="email" required />
+            <input
+              type="email"
+              placeholder="Digite seu email"
+              {...register("email")}
+            />
+            {errors.email && <p className="error">{errors.email.message}</p>}
 
             <label>Senha</label>
-            <input type="password" required />
+            <input
+              type="password"
+              placeholder="Digite sua senha"
+              {...register("senha")}
+            />
+            {errors.senha && <p className="error">{errors.senha.message}</p>}
 
             <div className="options">
-              <div>
-                <input type="checkbox" id="remember" />
-                <label htmlFor="remember"> Lembre-se por 30 dias</label>
+              <div className="remember-me"> 
+                <input type="checkbox" id="remember" {...register("lembrar")} />
+                <span>Lembre-se por 30 dias</span>
               </div>
-              <a href="#">Esqueceu a senha?</a>
+              <a href="#">Esqueci minha senha</a>
             </div>
 
             <button type="submit">Entrar</button>
