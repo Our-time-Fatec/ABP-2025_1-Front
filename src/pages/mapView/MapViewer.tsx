@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './MapViewer.css';
 import mapImage from '../../assets/map.png';
-import backgroundImage from '../../assets/background.jpg';
+// import backgroundImage from '../../assets/background.jpg';
 import logoImage from '../../assets/logo.png';
 
 const MapViewer: React.FC = () => {
@@ -29,7 +29,7 @@ const MapViewer: React.FC = () => {
           </div>
         </div>
         <aside className="sidebar">
-          <h3 className="text-sm font-semibold mb-4">Filtros por:</h3>
+          <h3 className="mb-4 font-semibold text-sm">Filtros por:</h3>
           <label>Data de:</label>
           <input type="date" />
           <label>Até:</label>
