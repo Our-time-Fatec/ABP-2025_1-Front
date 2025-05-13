@@ -1,33 +1,49 @@
-import React, { useState } from 'react';
-import './MapViewer.css';
-import mapImage from '../../assets/map.png';
-// import backgroundImage from '../../assets/background.jpg';
-import logoImage from '../../assets/logo.png';
+import React from "react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import "./MapViewer.css";
+import logoImage from "../../assets/logo.png";
+
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
 
 const MapViewer: React.FC = () => {
-  const [zoom, setZoom] = useState<number>(1);
-
-  const handleZoomIn = () => setZoom(zoom + 0.1);
-  const handleZoomOut = () => setZoom(zoom - 0.1 > 0.1 ? zoom - 0.1 : 0.1);
+  const saoPauloCoords: [number, number] = [-23.55052, -46.633308];
 
   return (
     <div className="container">
       <div className="top-bar">
         <img src={logoImage} alt="Logo" className="logo" />
       </div>
+
       <div className="map-container">
         <div className="map-section">
-          <img
-            src={mapImage}
-            alt="Mapa"
-            style={{ transform: `scale(${zoom})`, transition: 'transform 0.2s' }}
-            className="w-full h-full object-cover"
-          />
-          <div className="map-zoom">
-            <button onClick={handleZoomIn}>+</button>
-            <button onClick={handleZoomOut}>-</button>
+          <div className="map">
+            <MapContainer
+              center={saoPauloCoords}
+              zoom={10}
+              scrollWheelZoom={true}
+              style={{ height: "100%", width: "100%" }}
+            >
+              <TileLayer
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={saoPauloCoords}>
+                <Popup>São Paulo, SP</Popup>
+              </Marker>
+            </MapContainer>
           </div>
         </div>
+
         <aside className="sidebar">
           <h3 className="mb-4 font-semibold text-sm">Filtros por:</h3>
           <label>Data de:</label>
