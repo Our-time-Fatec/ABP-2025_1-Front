@@ -1,5 +1,12 @@
 import React from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMapEvents,
+  Polygon,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "./MapViewer.css";
@@ -15,8 +22,45 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
+const minimalIcon = new L.Icon({
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  iconSize: [18, 28], // menor que o padrão
+  iconAnchor: [9, 28],
+  popupAnchor: [0, -28],
+  shadowUrl: "",
+});
+
+function MapClickHandler({
+  onClick,
+}: {
+  onClick: (latlng: [number, number]) => void;
+}) {
+  useMapEvents({
+    click(e) {
+      const { lat, lng } = e.latlng;
+      onClick([lat, lng]);
+    },
+  });
+  return null;
+}
+
 const MapViewer: React.FC = () => {
   const saoPauloCoords: [number, number] = [-23.55052, -46.633308];
+
+  const [points, setPoints] = React.useState<[number, number][]>([]);
+  
+  const handleMapClick = (coords: [number, number]) => {
+    setPoints((prev) => {
+      if (prev.length >= 4) prev.shift();
+      const updated = [...prev, coords];
+      console.log("Coordenadas atuais do polígono:", updated);
+      return updated;
+    });
+  };
+
+  const clearPolygon = () => {
+    setPoints([]);
+  };
 
   return (
     <div className="container">
@@ -37,9 +81,22 @@ const MapViewer: React.FC = () => {
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <Marker position={saoPauloCoords}>
+              <MapClickHandler onClick={handleMapClick} />
+              {points.map((point, index) => (
+                <Marker key={index} position={point} icon={minimalIcon} />
+              ))}
+              {points.length > 2 && (
+                <Polygon positions={points} pathOptions={{ color: "lime" }} />
+              )}
+              {points.length > 0 && (
+                <button className="clear-button" onClick={clearPolygon}>
+                  Limpar Polígono
+                </button>
+              )}
+
+              {/* <Marker position={saoPauloCoords}>
                 <Popup>São Paulo, SP</Popup>
-              </Marker>
+              </Marker> */}
             </MapContainer>
           </div>
         </div>
@@ -56,7 +113,7 @@ const MapViewer: React.FC = () => {
           <input type="time" />
           <label>Coordenadas</label>
           <input type="text" placeholder="insira coordenadas" />
-          <button className="btn-clear">Limpar todos</button>
+          <button className="btn-clear" onClick={clearPolygon}>Limpar todos</button>
           <button className="btn-apply">Aplicar filtros</button>
         </aside>
       </div>
