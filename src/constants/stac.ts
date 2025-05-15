@@ -1,0 +1,1 @@
+export const collections = ["CB4-WFI-L2-DN-1"]

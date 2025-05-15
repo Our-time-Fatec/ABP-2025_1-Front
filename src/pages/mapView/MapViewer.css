@@ -115,6 +115,7 @@
 .btn-clear {
   background: #f8c291;
   margin-bottom: 10px;
+  margin-top: 20px
 }
 
 .btn-apply {
@@ -145,4 +146,10 @@
   &:hover {
     background-color: #e24600;
   }
+}
+
+.error{
+  color: #ff0000;
+  font-size: 14px;
+  margin-bottom: 30px;
 }

@@ -4,7 +4,7 @@
  * ProcessBurn API
  * OpenAPI spec version: 0.0.1
  */
-import { http } from "../client/http";
+import { http } from '../client/http';
 export type HelloWorld200 = {
   message: string;
 };
@@ -104,7 +104,7 @@ export type UpdateUser500 = {
 };
 
 export type GetQueimadasParams = {
-  date?: string;
+date?: string;
 };
 
 export type GetQueimadas200QueimadasItem = {
@@ -121,120 +121,199 @@ export type GetQueimadas500 = {
   message: string;
 };
 
+export type StacSearchBody = {
+  collections: string[];
+  /**
+   * @minItems 4
+   * @maxItems 4
+   */
+  bbox: number[];
+  datetime: string;
+  limit?: number;
+};
+
+export type StacSearch200 = {
+  message: string;
+  imagePath: string;
+};
+
+export type StacSearch400 = {
+  message: string;
+};
+
 /**
  * @summary Example route
  */
 export const getHelloWorldUrl = () => {
-  return `http://localhost:3030/api/hello-world`;
-};
 
-export const helloWorld = async (
-  options?: RequestInit
-): Promise<HelloWorld200> => {
-  return http<HelloWorld200>(getHelloWorldUrl(), {
+
+  
+
+  return `http://localhost:3030/api/hello-world`
+}
+
+export const helloWorld = async ( options?: RequestInit): Promise<HelloWorld200> => {
+  
+  return http<HelloWorld200>(getHelloWorldUrl(),
+  {      
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
+    
+    
+  }
+);}
+
+
 
 /**
  * @summary Upload de arquivo para S3
  */
 export const getUploadFileUrl = () => {
-  return `http://localhost:3030/upload`;
-};
 
-export const uploadFile = async (
-  options?: RequestInit
-): Promise<UploadFile200> => {
-  return http<UploadFile200>(getUploadFileUrl(), {
+
+  
+
+  return `http://localhost:3030/upload`
+}
+
+export const uploadFile = async ( options?: RequestInit): Promise<UploadFile200> => {
+  
+  return http<UploadFile200>(getUploadFileUrl(),
+  {      
     ...options,
-    method: "POST",
-  });
-};
+    method: 'POST'
+    
+    
+  }
+);}
+
+
 
 /**
  * @summary Login an user
  */
 export const getLoginUrl = () => {
-  return `http://localhost:3030/users/login`;
-};
 
-export const login = async (
-  loginBody: LoginBody,
-  options?: RequestInit
-): Promise<Login200> => {
-  return http<Login200>(getLoginUrl(), {
+
+  
+
+  return `http://localhost:3030/users/login`
+}
+
+export const login = async (loginBody: LoginBody, options?: RequestInit): Promise<Login200> => {
+  
+  return http<Login200>(getLoginUrl(),
+  {      
     ...options,
-    method: "POST",
-    headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(loginBody),
-  });
-};
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      loginBody,)
+  }
+);}
+
+
 
 /**
  * @summary Register an user
  */
 export const getRegisterUserUrl = () => {
-  return `http://localhost:3030/users/register`;
-};
 
-export const registerUser = async (
-  registerUserBody: RegisterUserBody,
-  options?: RequestInit
-): Promise<RegisterUser200> => {
-  return http<RegisterUser200>(getRegisterUserUrl(), {
+
+  
+
+  return `http://localhost:3030/users/register`
+}
+
+export const registerUser = async (registerUserBody: RegisterUserBody, options?: RequestInit): Promise<RegisterUser200> => {
+  
+  return http<RegisterUser200>(getRegisterUserUrl(),
+  {      
     ...options,
-    method: "POST",
-    headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(registerUserBody),
-  });
-};
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      registerUserBody,)
+  }
+);}
+
+
 
 /**
  * @summary Update an user
  */
 export const getUpdateUserUrl = () => {
-  return `http://localhost:3030/users/edit`;
-};
 
-export const updateUser = async (
-  updateUserBody: UpdateUserBody,
-  options?: RequestInit
-): Promise<UpdateUser200> => {
-  return http<UpdateUser200>(getUpdateUserUrl(), {
+
+  
+
+  return `http://localhost:3030/users/edit`
+}
+
+export const updateUser = async (updateUserBody: UpdateUserBody, options?: RequestInit): Promise<UpdateUser200> => {
+  
+  return http<UpdateUser200>(getUpdateUserUrl(),
+  {      
     ...options,
-    method: "PATCH",
-    headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(updateUserBody),
-  });
-};
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      updateUserBody,)
+  }
+);}
+
+
 
 /**
  * @summary Lista de queimadas registradas, geral ou por data.
  */
-export const getGetQueimadasUrl = (params?: GetQueimadasParams) => {
+export const getGetQueimadasUrl = (params?: GetQueimadasParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
+    
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? "null" : value.toString());
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0
-    ? `http://localhost:3030/queimadas?${stringifiedParams}`
-    : `http://localhost:3030/queimadas`;
-};
+  return stringifiedParams.length > 0 ? `http://localhost:3030/queimadas?${stringifiedParams}` : `http://localhost:3030/queimadas`
+}
 
-export const getQueimadas = async (
-  params?: GetQueimadasParams,
-  options?: RequestInit
-): Promise<GetQueimadas200> => {
-  return http<GetQueimadas200>(getGetQueimadasUrl(params), {
+export const getQueimadas = async (params?: GetQueimadasParams, options?: RequestInit): Promise<GetQueimadas200> => {
+  
+  return http<GetQueimadas200>(getGetQueimadasUrl(params),
+  {      
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+/**
+ * @summary Pesquisar imagens STAC
+ */
+export const getStacSearchUrl = () => {
+
+
+  
+
+  return `http://localhost:3030/stac/search`
+}
+
+export const stacSearch = async (stacSearchBody: StacSearchBody, options?: RequestInit): Promise<StacSearch200> => {
+  
+  return http<StacSearch200>(getStacSearchUrl(),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      stacSearchBody,)
+  }
+);}
