@@ -21,7 +21,8 @@ import { FormSchema, FormData } from "./schema";
 import { toBBox } from "../../functions/transform-lat";
 import { stacSearch } from "../../http/api";
 import { collections } from "../../constants/stac";
-import { catchError } from "../../client/try-catch";
+import { asyncCatchError } from "../../utils/try-catch";
+import { catchError } from "../../utils/normal-catch";
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
@@ -85,7 +86,12 @@ const MapViewer: React.FC = () => {
   };
 
   const onSubmit = async (data: FormData) => {
-    const bbox = toBBox(data.polygon);
+    const [error, bbox] = catchError(toBBox(data.polygon));
+
+    if(error){
+      alert("Erro ao calcular o bounding box: " + error);
+      return;
+    }
 
     const { endDate, startDate } = data;
     const endFinalDate = new Date(endDate);
@@ -105,7 +111,7 @@ const MapViewer: React.FC = () => {
       collections,
     });
 
-    const [err, res] = await catchError(stacSearch(finalData));
+    const [err, res] = await asyncCatchError(stacSearch(finalData));
 
     if (err) {
       alert("Erro!" + err);
