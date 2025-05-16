@@ -9,6 +9,7 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import { useNavigate } from "react-router-dom";
 import "./MapViewer.css";
 import logoImage from "../../assets/logo.png";
 import { useForm } from "react-hook-form";
@@ -17,12 +18,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
+
 import { FormSchema, FormData } from "./schema";
 import { toBBox } from "../../functions/transform-lat";
 import { stacSearch } from "../../http/api";
 import { collections } from "../../constants/stac";
 import { asyncCatchError } from "../../utils/try-catch";
 import { catchError } from "../../utils/normal-catch";
+import { useAuth } from "../../context/auth";
+
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
@@ -54,6 +58,13 @@ function MapClickHandler({
 
 const MapViewer: React.FC = () => {
   const saoPauloCoords: [number, number] = [-23.55052, -46.633308];
+  const navigate = useNavigate();
+  const {  clearToken } = useAuth();
+
+  const handleLogout = () => {
+    clearToken();
+    navigate("/"); // Redireciona para a página de login
+  };
 
   const {
     register,
@@ -124,6 +135,9 @@ const MapViewer: React.FC = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="container">
       <div className="top-bar">
         <img src={logoImage} alt="Logo" className="logo" />
+        <button className="logout-button" onClick={handleLogout} aria-label="Sair da conta">
+          Logout
+        </button>
       </div>
 
       <div className="map-container">
@@ -136,7 +150,7 @@ const MapViewer: React.FC = () => {
               style={{ height: "100%", width: "100%" }}
             >
               <TileLayer
-                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                attribution='© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
               <MapClickHandler onClick={handleMapClick} />
