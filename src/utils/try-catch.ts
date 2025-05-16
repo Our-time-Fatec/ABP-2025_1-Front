@@ -1,6 +1,6 @@
-type TryCatchResult<T> = [error: Error, result: null] | [error: null, result: T]
+import { TryCatchResult } from "../@types/ITryCatch"
 
-export async function catchError<T>(
+export async function asyncCatchError<T>(
   promise: Promise<T>
 ): Promise<TryCatchResult<T>> {
   try {

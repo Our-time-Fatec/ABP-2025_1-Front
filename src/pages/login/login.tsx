@@ -7,7 +7,7 @@ import mapImg from "../../assets/map.png";
 import logoImg from "../../assets/logo.png";
 import backgroundImg from "../../assets/background.jpg";
 import { login } from "../../http/api";
-import { catchError } from "../../client/try-catch";
+import { asyncCatchError } from "../../utils/try-catch";
 import { useAuth } from "../../context/auth";
 
 const loginSchema = z.object({
@@ -41,7 +41,7 @@ function Login() {
   const onSubmit = async (data: LoginFormData) => {
     console.log("Dados do formulário:", data);
 
-    const [err, res] = await catchError(login(data));
+    const [err, res] = await asyncCatchError(login(data));
     
     if (err) {
       alert(err.message);
@@ -51,6 +51,7 @@ function Login() {
     setToken(res.token);
 
     navigate("/mapa");
+    return
   };
 
   return (

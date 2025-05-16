@@ -1,0 +1,1 @@
+export type TryCatchResult<T> = [error: Error, result: null] | [error: null, result: T]

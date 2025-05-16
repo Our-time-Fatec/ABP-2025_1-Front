@@ -11,5 +11,10 @@ export function toBBox(points: [number, number][]): [number, number, number, num
   const minLng = Math.min(...lngs);
   const maxLng = Math.max(...lngs);
 
-  return [minLng, minLat, maxLng, maxLat];
+return [
+  +minLng.toFixed(6),
+  +minLat.toFixed(6),
+  +maxLng.toFixed(6),
+  +maxLat.toFixed(6),
+];
 }

@@ -12,11 +12,21 @@ import L from "leaflet";
 import { useNavigate } from "react-router-dom";
 import "./MapViewer.css";
 import logoImage from "../../assets/logo.png";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
+
+import { FormSchema, FormData } from "./schema";
+import { toBBox } from "../../functions/transform-lat";
+import { stacSearch } from "../../http/api";
+import { collections } from "../../constants/stac";
+import { asyncCatchError } from "../../utils/try-catch";
+import { catchError } from "../../utils/normal-catch";
 import { useAuth } from "../../context/auth";
+
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
@@ -56,23 +66,73 @@ const MapViewer: React.FC = () => {
     navigate("/"); // Redireciona para a página de login
   };
 
-  const [points, setPoints] = React.useState<[number, number][]>([]);
-  
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      startDate: "",
+      endDate: "",
+      polygon: [],
+    },
+  });
+
+  const points = watch("polygon");
+
   const handleMapClick = (coords: [number, number]) => {
-    setPoints((prev) => {
-      if (prev.length >= 4) prev.shift();
-      const updated = [...prev, coords];
-      console.log("Coordenadas atuais do polígono:", updated);
-      return updated;
-    });
+    const prev = watch("polygon");
+    const updated =
+      prev.length >= 4 ? [...prev.slice(1), coords] : [...prev, coords];
+    setValue("polygon", updated);
+    console.log("Novas coordenadas: " + updated);
   };
 
   const clearPolygon = () => {
-    setPoints([]);
+    setValue("polygon", []);
+  };
+
+  const onSubmit = async (data: FormData) => {
+    const [error, bbox] = catchError(toBBox(data.polygon));
+
+    if(error){
+      alert("Erro ao calcular o bounding box: " + error);
+      return;
+    }
+
+    const { endDate, startDate } = data;
+    const endFinalDate = new Date(endDate);
+    const startFinalDate = new Date(startDate);
+
+    const datetime = `${startFinalDate.toISOString()}/${endFinalDate.toISOString()}`;
+
+    const finalData = {
+      datetime,
+      collections,
+      bbox,
+    };
+
+    console.log("✅ Final STAC payload:", {
+      datetime,
+      bbox,
+      collections,
+    });
+
+    const [err, res] = await asyncCatchError(stacSearch(finalData));
+
+    if (err) {
+      alert("Erro!" + err);
+    }
+
+    console.log(res);
   };
 
   return (
-    <div className="container">
+    <form onSubmit={handleSubmit(onSubmit)} className="container">
       <div className="top-bar">
         <img src={logoImage} alt="Logo" className="logo" />
         <button className="logout-button" onClick={handleLogout} aria-label="Sair da conta">
@@ -101,35 +161,46 @@ const MapViewer: React.FC = () => {
                 <Polygon positions={points} pathOptions={{ color: "lime" }} />
               )}
               {points.length > 0 && (
-                <button className="clear-button" onClick={clearPolygon}>
+                <button
+                  type="button"
+                  className="clear-button"
+                  onClick={clearPolygon}
+                >
                   Limpar Polígono
                 </button>
               )}
-
-              {/* <Marker position={saoPauloCoords}>
-                <Popup>São Paulo, SP</Popup>
-              </Marker> */}
             </MapContainer>
           </div>
         </div>
 
         <aside className="sidebar">
           <h3 className="mb-4 font-semibold text-sm">Filtros por:</h3>
-          <label>Data de:</label>
-          <input type="date" />
-          <label>Até:</label>
-          <input type="date" />
-          <label>Hora de:</label>
-          <input type="time" />
-          <label>Até:</label>
-          <input type="time" />
-          <label>Coordenadas</label>
-          <input type="text" placeholder="insira coordenadas" />
-          <button className="btn-clear" onClick={clearPolygon}>Limpar todos</button>
-          <button className="btn-apply">Aplicar filtros</button>
+
+          <label>Data inicial</label>
+          <input type="date" {...register("startDate")} />
+          {errors.startDate && (
+            <span className="error">{errors.startDate.message}</span>
+          )}
+
+          <label>Data final</label>
+          <input type="date" {...register("endDate")} />
+          {errors.endDate && (
+            <span className="error">{errors.endDate.message}</span>
+          )}
+
+          {errors.polygon && (
+            <span className="error">{errors.polygon.message}</span>
+          )}
+
+          <button type="button" className="btn-clear" onClick={clearPolygon}>
+            Limpar todos
+          </button>
+          <button type="submit" className="btn-apply">
+            Aplicar filtros
+          </button>
         </aside>
       </div>
-    </div>
+    </form>
   );
 };
 
