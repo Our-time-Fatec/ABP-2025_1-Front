@@ -16,6 +16,7 @@ import logoImage from "../../assets/logo.png";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
+import { useAuth } from "../../context/auth";
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
@@ -48,9 +49,10 @@ function MapClickHandler({
 const MapViewer: React.FC = () => {
   const saoPauloCoords: [number, number] = [-23.55052, -46.633308];
   const navigate = useNavigate();
+  const {  clearToken } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem("authToken"); // Remove o token de autenticação
+    clearToken();
     navigate("/"); // Redireciona para a página de login
   };
 
