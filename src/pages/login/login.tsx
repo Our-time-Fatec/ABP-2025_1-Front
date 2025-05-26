@@ -91,6 +91,7 @@ function Login() {
             </div>
 
             <button type="submit">Entrar</button>
+            <button type="submit">Registre-se</button>
           </form>
         </div>
       </div>
