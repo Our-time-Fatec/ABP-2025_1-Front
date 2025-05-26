@@ -36,7 +36,7 @@ L.Icon.Default.mergeOptions({
 
 const minimalIcon = new L.Icon({
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  iconSize: [18, 28], // menor que o padrão
+  iconSize: [18, 28],
   iconAnchor: [9, 28],
   popupAnchor: [0, -28],
   shadowUrl: "",
@@ -63,7 +63,7 @@ const MapViewer: React.FC = () => {
 
   const handleLogout = () => {
     clearToken();
-    navigate("/"); // Redireciona para a página de login
+    navigate("/");
   };
 
   const {
