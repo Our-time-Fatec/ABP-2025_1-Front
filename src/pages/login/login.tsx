@@ -87,7 +87,9 @@ function Login() {
                 <input type="checkbox" id="remember" {...register("lembrar")} />
                 <span>Lembre-se por 30 dias</span>
               </div>
-              <a href="#">Esqueci minha senha</a>
+              <span className="register-link" onClick={() => navigate("/register")}>
+                Registre-se
+              </span>
             </div>
 
             <button type="submit">Entrar</button>
