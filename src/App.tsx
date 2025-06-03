@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/login/login";
 import MapViewer from "./pages/mapView/MapViewer";
 import Register from "./pages/register/register";
+import MapRegister from "./pages/mapRegister/mapRegister";
 import { AuthProvider } from "./context/auth";
 import { PrivateRoute } from "./pages/routes/PrivateRoute";
 
@@ -14,13 +15,14 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route
-            path="/"
+            path="/mapa"
             element={
               <PrivateRoute>
                 <MapViewer />
               </PrivateRoute>
             }
           />
+          <Route path="/mapRegister" element={<MapRegister />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
