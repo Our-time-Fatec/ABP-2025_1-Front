@@ -1,39 +1,124 @@
+/* src/pages/mapRegister/mapRegister.css */
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Estilo do container principal, com o mesmo background */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-image: url("../../assets/background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* --- ESTILOS DA BARRA SUPERIOR (COPIADOS DO mapViewer.css PARA CONSISTÊNCIA) --- */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box; /* Garante que o padding não afete a largura total */
+}
+
+.logo {
+  height: 70px;
+  width: 150px;
+  margin-right: 10px;
+  margin-top: 20px;
+}
+
+.logout-button {
+  background-color: #ff7043;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 30px;
+}
+
+.logout-button:hover {
+  background-color: #e55c2f;
+}
+
+.logout-button:focus {
+  outline: 2px solid #ff7043;
+}
+
+/* --- NOVOS ESTILOS PARA O BOTÃO VOLTAR E O CONTAINER DA ESQUERDA --- */
+
+/* Container para agrupar o botão de voltar e o logo */
+.top-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espaço entre o botão e o logo */
+}
+
+/* Botão de voltar com estilo secundário (borda na cor primária) */
+.back-button {
+  background-color: white;
+  color: #ff7043;
+  border: 1px solid #ff7043;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.back-button:hover {
+  background-color: #fff8f5; /* Um tom de laranja bem claro */
+}
+
+
+/* --- ESTILOS DE LAYOUT ESPECÍFICOS DA PÁGINA DE REGISTRO --- */
+/* (Baseado no seu CSS original da primeira pergunta) */
+
 .map-container {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-  }
-  
-  .sidebar {
-    position: fixed;
-    top: 0;
-    right: 0; /* Agora do lado direito */
-    width: 300px;
-    height: 100%;
-    background: white;
-    padding: 20px;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Sombra para esquerda */
-    overflow-y: auto;
-    z-index: 10;
-  }
-  
-  .map-section {
-    margin-right: 300px; /* Espaço para a sidebar */
-    height: 100vh;
-  }
-  
-  .images-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  .thumbnail {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
+  position: relative;
+  height: calc(100vh - 60px); /* Altura total menos a top-bar */
+  width: 100%;
+}
+
+.sidebar {
+  position: fixed;
+  top: 60px; /* Começa abaixo da top-bar */
+  right: 0;
+  width: 300px;
+  height: calc(100vh - 60px); /* Altura total menos a top-bar */
+  background: rgba(255, 255, 255, 0.8); /* Fundo branco com transparência */
+  backdrop-filter: blur(5px); /* Efeito de vidro fosco */
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.map-section {
+  margin-right: 300px;
+  height: 80%;
+  display: flex;
+}
+
+.images-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.thumbnail {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
