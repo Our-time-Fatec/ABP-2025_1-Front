@@ -1,39 +1,102 @@
-/* src/pages/mapRegister/mapRegister.css */
-
 body {
   margin: 0;
   padding: 0;
+  font-family: Arial, sans-serif;
 }
 
-/* Estilo do container principal, com o mesmo background */
-.container {
+.gallery-container {
   display: flex;
   flex-direction: column;
   height: 100vh;
   width: 100vw;
-  overflow: hidden;
-  background-image: url("../../assets/background.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  background-attachment: fixed; /* O fundo não rola com o conteúdo */
 }
 
-/* --- ESTILOS DA BARRA SUPERIOR (COPIADOS DO mapViewer.css PARA CONSISTÊNCIA) --- */
+/* --- BARRA SUPERIOR --- */
 .top-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 60px;
-  padding: 0 20px;
+  height: 80px;
+  padding: 0 40px;
   width: 100%;
-  box-sizing: border-box; /* Garante que o padding não afete a largura total */
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  flex-shrink: 0; /* Impede que a barra superior encolha */
+}
+
+/* --- NOVO: ESTILOS DA BARRA DE PESQUISA --- */
+.search-container {
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 25px; /* Bordas bem arredondadas */
+  padding: 8px 15px;
+  width: 100%;
+  max-width: 400px; /* Largura máxima da pesquisa */
+  transition: all 0.2s ease;
+}
+
+.search-container:focus-within {
+  /* Efeito sutil quando o input está focado */
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 2px #ff7043;
+}
+
+.search-input {
+  flex-grow: 1; /* Faz o input ocupar o espaço disponível */
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 1rem;
+  color: #333;
+}
+
+.search-input::placeholder {
+  color: #555;
+  opacity: 0.8;
+}
+
+.search-icon {
+  width: 22px;
+  height: 22px;
+  color: #333;
+  margin-left: 10px;
+}
+/* --- FIM DOS ESTILOS DA PESQUISA --- */
+
+
+.top-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .logo {
-  height: 70px;
-  width: 150px;
-  margin-right: 10px;
-  margin-top: 20px;
+  height: 60px;
+  width: auto;
+}
+
+.back-button {
+  background-color: white;
+  color: #ff7043;
+  border: 1px solid #ff7043;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #ff7043;
+  color: white;
 }
 
 .logout-button {
@@ -41,84 +104,150 @@ body {
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-  margin-right: 30px;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
 }
 
 .logout-button:hover {
   background-color: #e55c2f;
 }
 
-.logout-button:focus {
-  outline: 2px solid #ff7043;
+/* --- ÁREA DE CONTEÚDO PRINCIPAL --- */
+.content-area {
+  flex-grow: 1; /* Faz com que esta área ocupe todo o espaço restante */
+  overflow-y: auto; /* Adiciona scroll apenas nesta área */
+  padding: 30px 40px;
 }
 
-/* --- NOVOS ESTILOS PARA O BOTÃO VOLTAR E O CONTAINER DA ESQUERDA --- */
+.gallery-title {
+  color: rgb(0, 0, 0);
+  font-family:Georgia, 'Times New Roman', Times, serif;
+  font-size: 2.5rem;
+  margin-top: 0;
+  margin-bottom: 30px;
+  text-align: center;
+  border-bottom: 2px solid #ff7043;
+  padding-bottom: 15px;
+}
 
-/* Container para agrupar o botão de voltar e o logo */
-.top-bar-left {
+/* --- A GRADE DA GALERIA --- */
+.gallery-grid {
+  display: grid;
+  /* Cria 5 colunas de largura igual */
+  grid-template-columns: repeat(5, 1fr);
+  gap: 25px; /* Espaço entre os cards */
+}
+
+/* --- O CARD DE IMAGEM INDIVIDUAL --- */
+.image-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  overflow: hidden; /* Garante que a imagem não saia das bordas arredondadas */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
-  align-items: center;
-  gap: 15px; /* Espaço entre o botão e o logo */
+  flex-direction: column;
 }
 
-/* Botão de voltar com estilo secundário (borda na cor primária) */
-.back-button {
-  background-color: white;
-  color: #ff7043;
-  border: 1px solid #ff7043;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
+.image-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
 }
 
-.back-button:hover {
-  background-color: #fff8f5; /* Um tom de laranja bem claro */
-}
-
-
-/* --- ESTILOS DE LAYOUT ESPECÍFICOS DA PÁGINA DE REGISTRO --- */
-/* (Baseado no seu CSS original da primeira pergunta) */
-
-.map-container {
-  position: relative;
-  height: calc(100vh - 60px); /* Altura total menos a top-bar */
+.card-image {
   width: 100%;
+  height: 200px; /* Altura fixa para as imagens */
+  object-fit: cover; /* Garante que a imagem cubra a área sem distorcer */
 }
 
-.sidebar {
-  position: fixed;
-  top: 60px; /* Começa abaixo da top-bar */
-  right: 0;
-  width: 300px;
-  height: calc(100vh - 60px); /* Altura total menos a top-bar */
-  background: rgba(255, 255, 255, 0.8); /* Fundo branco com transparência */
-  backdrop-filter: blur(5px); /* Efeito de vidro fosco */
-  padding: 20px;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
-  z-index: 10;
+.card-info {
+  padding: 15px;
 }
 
-.map-section {
-  margin-right: 300px;
-  height: 80%;
-  display: flex;
+.card-id {
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin: 0 0 5px 0;
+  word-break: break-all; /* Quebra IDs muito longos */
 }
 
-.images-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
+.card-date {
+  font-size: 0.8rem;
+  color: #555;
+  margin: 0;
 }
 
-.thumbnail {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+/* --- MENSAGEM DE 'NENHUM RESULTADO' --- */
+.no-results {
+  text-align: center;
+  margin-top: 100px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 40px;
+  border-radius: 12px;
+  display: inline-block;
+  left: 50%;
+  position: relative;
+  transform: translateX(-50%);
 }
+.no-results h3 {
+  color: #333;
+  font-size: 1.5rem;
+}
+.no-results p {
+  color: #666;
+}
+
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 1400px) {
+  .gallery-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 1100px) {
+  .gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .search-container {
+    /* Em telas menores, a pesquisa pode ficar um pouco apertada */
+    /* Você pode optar por escondê-la ou ajustar o layout */
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 800px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .gallery-title {
+    font-size: 2rem;
+  }
+  .content-area {
+    padding: 20px;
+  }
+  .top-bar {
+    padding: 0 20px;
+    flex-wrap: wrap; /* Permite que os itens quebrem a linha */
+    height: auto; /* Altura automática para acomodar a quebra */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    gap: 10px;
+  }
+  .search-container {
+    order: 3; /* Muda a ordem para a pesquisa ir para baixo */
+    width: calc(100% - 40px); /* Ocupa a largura toda menos o padding */
+    margin: 0 auto; /* Centraliza */
+    max-width: none;
+  }
+}
+
+@media (max-width: 500px) {
+  .gallery-grid {
+    grid-template-columns: 1fr; /* Uma coluna em telas muito pequenas */
+  }
+}
+

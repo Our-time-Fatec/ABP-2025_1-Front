@@ -1,110 +1,108 @@
-import React, { useState, useEffect } from "react";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import "./mapRegister.css"; // O novo CSS que criaremos abaixo
-
-import L from "leaflet";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react"; // NOVO: importar useState
+import { useLocation, useNavigate } from "react-router-dom";
+import "./mapRegister.css";
 import { useAuth } from "../../context/auth";
 import logoImage from "../../assets/logo.png";
-import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
-import markerIcon from "leaflet/dist/images/marker-icon.png";
-import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: markerIcon2x,
-  iconUrl: markerIcon,
-  shadowUrl: markerShadow,
-});
-
-interface WildfireRecord {
-  id: string;
-  date: string;
-  location: [number, number];
-  severity: number;
-  images: { url: string }[];
-}
+// A função formatDate continua a mesma
+const formatDate = (dateString: string) => {
+  if (!dateString) return "";
+  return new Date(dateString).toLocaleDateString("pt-BR", {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+};
 
 const MapRegister: React.FC = () => {
-  const [records, setRecords] = useState<WildfireRecord[]>([]);
-  const [selectedRecord, setSelectedRecord] = useState<WildfireRecord | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
   const navigate = useNavigate();
+  const location = useLocation();
   const { clearToken } = useAuth();
+  
+  // NOVO: Estado para armazenar o valor da pesquisa
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const saoPauloCoords: [number, number] = [-23.55052, -46.633308];
+  const { results, dateRange } = location.state || { results: [], dateRange: null };
 
   const handleLogout = () => {
     clearToken();
     navigate("/");
   };
 
-  const fetchRecords = async () => {
-    // Sua lógica de fetch...
-  };
+  const pageTitle = dateRange 
+    ? `Resultados para ${formatDate(dateRange.start)} - ${formatDate(dateRange.end)}`
+    : "Histórico de Registros";
 
-  useEffect(() => {
-    // fetchRecords();
-    setLoading(false); // Apenas para exemplo
-  }, []);
+  // NOVO: Lógica para filtrar os resultados com base no searchTerm
+  // Filtra pelo 'id' do item, ignorando maiúsculas/minúsculas.
+  const filteredResults = results.filter((item: any) => 
+    item.id.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <div className="container">
-      <div className="top-bar">
+    <div className="gallery-container">
+      <header className="top-bar">
+        {/* Bloco da Esquerda */}
         <div className="top-bar-left">
           <button
             className="back-button"
             onClick={() => navigate(-1)}
             aria-label="Voltar para a página anterior"
           >
-            &larr; Voltar
+            ← Voltar
           </button>
           <img src={logoImage} alt="Logo" className="logo" />
         </div>
+
+        {/* NOVO: Container da Pesquisa (adicionado no meio) */}
+        <div className="search-container">
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Pesquisar por ID..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          {/* Ícone de Lupa em SVG para não precisar de imagens externas */}
+          <svg className="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+          </svg>
+        </div>
+
+        {/* Bloco da Direita */}
         <button className="logout-button" onClick={handleLogout} aria-label="Sair da conta">
           Logout
         </button>
-      </div>
+      </header>
 
-      <div className="map-container">
-        <div className="map-section">
-          {loading ? (
-            <p>Carregando...</p>
-          ) : error ? (
-            <p className="error">{error}</p>
-          ) : (
-            <MapContainer
-              center={saoPauloCoords}
-              zoom={10}
-              scrollWheelZoom={true}
-              style={{ height: "100%", width: "100%" }}
-            >
-              <TileLayer
-                attribution='© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              {/* Seus Markers... */}
-            </MapContainer>
-          )}
-        </div>
-
-        <aside className="sidebar">
-          <h3>Detalhes do Registro</h3>
-          {selectedRecord ? (
-            <div>
-              <p><strong>Data:</strong> {selectedRecord.date}</p>
-              <p><strong>Severidade:</strong> {selectedRecord.severity}</p>
-              <div className="images-container">
-                {/* Suas imagens... */}
+      <main className="content-area">
+        <h2 className="gallery-title">{pageTitle}</h2>
+        
+        {/* Mude a verificação e o map para usar 'filteredResults' */}
+        {filteredResults && filteredResults.length > 0 ? (
+          <div className="gallery-grid">
+            {filteredResults.map((item: any) => ( // NOVO: usar filteredResults
+              <div key={item.id} className="image-card">
+                <img
+                  src={item.assets.thumbnail.href}
+                  alt={item.id}
+                  className="card-image"
+                />
+                <div className="card-info">
+                  <p className="card-id">{item.id}</p>
+                  <p className="card-date">{formatDate(item.properties.datetime)}</p>
+                </div>
               </div>
-            </div>
-          ) : (
-            <p>Selecione um marcador no mapa para ver os detalhes.</p>
-          )}
-        </aside>
-      </div>
+            ))}
+          </div>
+        ) : (
+          <div className="no-results">
+            <h3>Nenhum resultado encontrado.</h3>
+            {/* Mensagem um pouco mais genérica agora */}
+            <p>Tente ajustar sua busca ou volte para fazer uma nova consulta no mapa.</p>
+          </div>
+        )}
+      </main>
     </div>
   );
 };
