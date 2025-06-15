@@ -1,3 +1,4 @@
+
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/login/login";
@@ -22,7 +23,14 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path="/mapRegister" element={<MapRegister />} />
+          <Route
+            path="/mapRegister"
+            element={
+              <PrivateRoute>
+                <MapRegister />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

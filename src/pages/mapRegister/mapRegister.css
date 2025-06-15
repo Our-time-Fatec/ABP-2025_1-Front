@@ -36,4 +36,47 @@
     border: 1px solid #ccc;
     border-radius: 4px;
   }
-  
+
+.analytics-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  max-width: 400px;
+  width: 90%;
+  z-index: 20;
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
+.analytics-overlay h3 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.analytics-section {
+  margin-bottom: 15px;
+}
+
+.analytics-overlay .close-button {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+  margin-bottom: 10px;
+}
+
+.analytics-overlay.error {
+  border: 2px solid red;
+}
+
+.analytics-overlay p {
+  margin: 5px 0;
+}

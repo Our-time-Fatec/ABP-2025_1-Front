@@ -26,8 +26,6 @@ import { collections } from "../../constants/stac";
 import { asyncCatchError } from "../../utils/try-catch";
 import { catchError } from "../../utils/normal-catch";
 import { useAuth } from "../../context/auth";
-import MapRegister from "../mapRegister/mapRegister";
-
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
@@ -60,7 +58,7 @@ function MapClickHandler({
 const MapViewer: React.FC = () => {
   const saoPauloCoords: [number, number] = [-23.55052, -46.633308];
   const navigate = useNavigate();
-  const {  clearToken } = useAuth();
+  const { clearToken } = useAuth();
 
   const handleLogout = () => {
     clearToken();

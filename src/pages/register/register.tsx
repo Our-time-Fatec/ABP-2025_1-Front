@@ -39,7 +39,7 @@ function Register() {
   const onSubmit = async (data: RegisterFormData) => {
     console.log("Dados do formulário:", data);
 
-    const [err, res] = await asyncCatchError(registerUser(data));
+    const [err] = await asyncCatchError(registerUser(data));
     
     if (err) {
       alert(err.message);
