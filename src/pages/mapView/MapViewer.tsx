@@ -26,6 +26,7 @@ import { collections } from "../../constants/stac";
 import { asyncCatchError } from "../../utils/try-catch";
 import { catchError } from "../../utils/normal-catch";
 import { useAuth } from "../../context/auth";
+import MapRegister from "../mapRegister/mapRegister";
 
 
 L.Icon.Default.mergeOptions({
@@ -197,6 +198,9 @@ const MapViewer: React.FC = () => {
           </button>
           <button type="submit" className="btn-apply">
             Aplicar filtros
+          </button>
+          <button type="button" className="btn-register" onClick={() => navigate("/mapRegister")}>
+            Histórico de Registros
           </button>
         </aside>
       </div>
