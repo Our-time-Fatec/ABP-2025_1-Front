@@ -103,26 +103,6 @@ export type UpdateUser500 = {
   message: string;
 };
 
-export type StacSearchBody = {
-  collections: string[];
-  /**
-   * @minItems 4
-   * @maxItems 4
-   */
-  bbox: number[];
-  datetime: string;
-  limit?: number;
-};
-
-export type StacSearch200 = {
-  message: string;
-  imagePath: string;
-};
-
-export type StacSearch400 = {
-  message: string;
-};
-
 export type BboxCicatrizParams = {
 bbox: number[];
 startDate?: string;
@@ -193,8 +173,27 @@ export type ScarCheck400 = {
   message: string;
 };
 
+export type StacSearchBody = {
+  collections: string[];
+  /**
+   * @minItems 4
+   * @maxItems 4
+   */
+  bbox: number[];
+  datetime: string;
+  limit?: number;
+  ignore_existing?: boolean;
+};
 
+export type StacSearch200 = {
+  jobId: string;
+  status: string;
+  message: string;
+};
 
+export type StacSearch400 = {
+  message: string;
+};
 
 export type FinalizeCicatrizParams = {
 jobId: string;
@@ -577,6 +576,7 @@ export type GetAllDataAnalytics200 = {
   stacId: string;
   /** @nullable */
   uploadId: number | null;
+  url: string;
   areaStats: GetAllDataAnalytics200AreaStats;
   ndviStats: GetAllDataAnalytics200NdviStats;
   areaSummary: GetAllDataAnalytics200AreaSummary;
@@ -657,12 +657,13 @@ export type SearchLatLng400 = {
   message: string;
 };
 
+export type GetHistogramAverageHistory200AveragesItemRange = {
+  from: number;
+  to: number;
+};
+
 export type GetHistogramAverageHistory200AveragesItem = {
-  /**
-   * @minItems 2
-   * @maxItems 2
-   */
-  range: unknown[];
+  range: GetHistogramAverageHistory200AveragesItemRange;
   averageCount: number;
 };
 

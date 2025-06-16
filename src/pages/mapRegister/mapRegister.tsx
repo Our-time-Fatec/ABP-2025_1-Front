@@ -4,7 +4,10 @@ import logoImage from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/auth";
 import { allCicatriz, getAllDataAnalytics } from "../../http/api";
-import type { AllCicatriz201DataItem, GetAllDataAnalytics200 } from "../../http/api";
+import type {
+  AllCicatriz201DataItem,
+  GetAllDataAnalytics200,
+} from "../../http/api";
 
 const MapRegister: React.FC = () => {
   const { clearToken } = useAuth();
@@ -14,7 +17,8 @@ const MapRegister: React.FC = () => {
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [analyticsData, setAnalyticsData] = useState<GetAllDataAnalytics200 | null>(null);
+  const [analyticsData, setAnalyticsData] =
+    useState<GetAllDataAnalytics200 | null>(null);
   const [analyticsLoading, setAnalyticsLoading] = useState(false);
   const [analyticsError, setAnalyticsError] = useState<string | null>(null);
 
@@ -66,10 +70,18 @@ const MapRegister: React.FC = () => {
       <div className="top-bar">
         <img src={logoImage} alt="Logo" className="logo" />
         <div className="top-bar-buttons">
-          <button className="back-button" onClick={() => navigate(-1)} aria-label="Voltar">
+          <button
+            className="back-button"
+            onClick={() => navigate(-1)}
+            aria-label="Voltar"
+          >
             Voltar
           </button>
-          <button className="logout-button" onClick={handleLogout} aria-label="Sair da conta">
+          <button
+            className="logout-button"
+            onClick={handleLogout}
+            aria-label="Sair da conta"
+          >
             Logout
           </button>
         </div>
@@ -121,6 +133,15 @@ const MapRegister: React.FC = () => {
             <button className="close-button" onClick={handleCloseAnalytics}>
               Fechar
             </button>
+            <h3>Imagem Ampliada</h3>
+            {analyticsData.url && (
+              <img
+                src={analyticsData.url}
+                alt="Imagem ampliada"
+                className="large-image"
+              />
+            )}
+
             <h3>Dados Analíticos</h3>
             <div className="analytics-section">
               <h4>Área Stats</h4>
@@ -137,8 +158,12 @@ const MapRegister: React.FC = () => {
             </div>
             <div className="analytics-section">
               <h4>Resumo de Área</h4>
-              <p>Área Total (km²): {analyticsData.areaSummary.total_area_km2}</p>
-              <p>Área Queimada (km²): {analyticsData.areaSummary.burned_area_km2}</p>
+              <p>
+                Área Total (km²): {analyticsData.areaSummary.total_area_km2}
+              </p>
+              <p>
+                Área Queimada (km²): {analyticsData.areaSummary.burned_area_km2}
+              </p>
               <p>% Queimada: {analyticsData.areaSummary.burned_percent}%</p>
             </div>
           </div>
