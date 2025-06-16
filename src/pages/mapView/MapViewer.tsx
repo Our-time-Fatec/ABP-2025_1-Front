@@ -3,7 +3,6 @@ import {
   MapContainer,
   TileLayer,
   Marker,
-  Popup,
   useMapEvents,
   Polygon,
 } from "react-leaflet";
@@ -35,7 +34,7 @@ L.Icon.Default.mergeOptions({
 
 const minimalIcon = new L.Icon({
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  iconSize: [18, 28], // menor que o padrão
+  iconSize: [18, 28],
   iconAnchor: [9, 28],
   popupAnchor: [0, -28],
   shadowUrl: "",
@@ -60,15 +59,16 @@ const MapViewer: React.FC = () => {
   const navigate = useNavigate();
   const { clearToken } = useAuth();
 
+  const [showSuccess, setShowSuccess] = React.useState(false);
+
   const handleLogout = () => {
     clearToken();
-    navigate("/"); // Redireciona para a página de login
+    navigate("/");
   };
 
   const {
     register,
     handleSubmit,
-    control,
     setValue,
     watch,
     formState: { errors },
@@ -98,7 +98,7 @@ const MapViewer: React.FC = () => {
   const onSubmit = async (data: FormData) => {
     const [error, bbox] = catchError(toBBox(data.polygon));
 
-    if(error){
+    if (error) {
       alert("Erro ao calcular o bounding box: " + error);
       return;
     }
@@ -125,9 +125,15 @@ const MapViewer: React.FC = () => {
 
     if (err) {
       alert("Erro!" + err);
+      return;
     }
 
     console.log(res);
+
+    if (res) {
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 3000);
+    }
   };
 
   return (
@@ -202,6 +208,12 @@ const MapViewer: React.FC = () => {
           </button>
         </aside>
       </div>
+
+      {showSuccess && (
+        <div className="success-dialog">
+          ✅ Filtros aplicados com sucesso!
+        </div>
+      )}
     </form>
   );
 };

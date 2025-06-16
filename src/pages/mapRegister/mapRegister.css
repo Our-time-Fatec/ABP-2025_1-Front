@@ -15,6 +15,7 @@
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Sombra para esquerda */
     overflow-y: auto;
     z-index: 10;
+    margin-top: 60px;
   }
   
   .map-section {
@@ -79,4 +80,22 @@
 
 .analytics-overlay p {
   margin: 5px 0;
+}
+
+.top-bar-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.back-button {
+  background-color: #ff7043;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background-color: #ff7043;
 }

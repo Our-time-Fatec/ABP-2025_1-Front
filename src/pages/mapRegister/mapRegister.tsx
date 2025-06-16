@@ -65,9 +65,14 @@ const MapRegister: React.FC = () => {
     <div className="container">
       <div className="top-bar">
         <img src={logoImage} alt="Logo" className="logo" />
-        <button className="logout-button" onClick={handleLogout} aria-label="Sair da conta">
-          Logout
-        </button>
+        <div className="top-bar-buttons">
+          <button className="back-button" onClick={() => navigate(-1)} aria-label="Voltar">
+            Voltar
+          </button>
+          <button className="logout-button" onClick={handleLogout} aria-label="Sair da conta">
+            Logout
+          </button>
+        </div>
       </div>
 
       <div className="map-container">
