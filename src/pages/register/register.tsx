@@ -46,7 +46,7 @@ function Register() {
       return;
     }
 
-    navigate("/login");
+    navigate("/");
     return
   };
 
