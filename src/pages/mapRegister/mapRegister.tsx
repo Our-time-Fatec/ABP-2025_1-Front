@@ -106,7 +106,6 @@ const MapRegister: React.FC = () => {
                     alt={`Imagem ${index + 1}`}
                     className="thumbnail"
                     onClick={() => handleImageClick(item.id)}
-                    style={{ cursor: "pointer" }}
                   />
                 ))}
             </div>
@@ -115,56 +114,58 @@ const MapRegister: React.FC = () => {
 
         <div className="map-section" />
 
-        {analyticsLoading && (
-          <div className="analytics-overlay">
-            <p>Carregando análise...</p>
-          </div>
-        )}
+        {(analyticsLoading || analyticsData || analyticsError) && (
+          <div className="overlay-wrapper">
+            <div className="backdrop" onClick={handleCloseAnalytics}></div>
 
-        {analyticsError && (
-          <div className="analytics-overlay error">
-            <p>{analyticsError}</p>
-            <button onClick={handleCloseAnalytics}>Fechar</button>
-          </div>
-        )}
+            <div className={`analytics-overlay ${analyticsError ? "error" : ""}`}>
+              <button
+                className="close-button"
+                onClick={handleCloseAnalytics}
+                aria-label="Fechar"
+              >
+                ×
+              </button>
 
-        {analyticsData && (
-          <div className="analytics-overlay">
-            <button className="close-button" onClick={handleCloseAnalytics}>
-              Fechar
-            </button>
-            <h3>Imagem Ampliada</h3>
-            {analyticsData.url && (
-              <img
-                src={analyticsData.url}
-                alt="Imagem ampliada"
-                className="large-image"
-              />
-            )}
+              {analyticsLoading && <p>Carregando análise...</p>}
 
-            <h3>Dados Analíticos</h3>
-            <div className="analytics-section">
-              <h4>Área Stats</h4>
-              <p>Total m²: {analyticsData.areaStats.total_area_m2}</p>
-              <p>Total ha: {analyticsData.areaStats.total_area_ha}</p>
-            </div>
-            <div className="analytics-section">
-              <h4>NDVI Stats</h4>
-              <p>Min: {analyticsData.ndviStats.min}</p>
-              <p>Max: {analyticsData.ndviStats.max}</p>
-              <p>Média: {analyticsData.ndviStats.mean}</p>
-              <p>Desvio padrão: {analyticsData.ndviStats.std}</p>
-              <p>% acima de 0.5: {analyticsData.ndviStats.pct_acima_0_5}%</p>
-            </div>
-            <div className="analytics-section">
-              <h4>Resumo de Área</h4>
-              <p>
-                Área Total (km²): {analyticsData.areaSummary.total_area_km2}
-              </p>
-              <p>
-                Área Queimada (km²): {analyticsData.areaSummary.burned_area_km2}
-              </p>
-              <p>% Queimada: {analyticsData.areaSummary.burned_percent}%</p>
+              {analyticsError && (
+                <p>{analyticsError}</p>
+              )}
+
+              {analyticsData && (
+                <>
+                  
+                  {analyticsData.url && (
+                    <img
+                      src={analyticsData.url}
+                      alt="Imagem ampliada"
+                      className="large-image"
+                    />
+                  )}
+
+                  <h3>Dados Analíticos</h3>
+                  <div className="analytics-section">
+                    <h4>Área Stats</h4>
+                    <p>Total m²: {analyticsData.areaStats.total_area_m2}</p>
+                    <p>Total ha: {analyticsData.areaStats.total_area_ha}</p>
+                  </div>
+                  <div className="analytics-section">
+                    <h4>NDVI Stats</h4>
+                    <p>Min: {analyticsData.ndviStats.min}</p>
+                    <p>Max: {analyticsData.ndviStats.max}</p>
+                    <p>Média: {analyticsData.ndviStats.mean}</p>
+                    <p>Desvio padrão: {analyticsData.ndviStats.std}</p>
+                    <p>% acima de 0.5: {analyticsData.ndviStats.pct_acima_0_5}%</p>
+                  </div>
+                  <div className="analytics-section">
+                    <h4>Resumo de Área</h4>
+                    <p>Área Total (km²): {analyticsData.areaSummary.total_area_km2}</p>
+                    <p>Área Queimada (km²): {analyticsData.areaSummary.burned_area_km2}</p>
+                    <p>% Queimada: {analyticsData.areaSummary.burned_percent}%</p>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         )}
